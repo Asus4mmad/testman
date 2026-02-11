@@ -1,0 +1,109 @@
+classDiagram
+    %% State Pattern
+    class TicketState {
+        <<interface>>
+        +handle(Ticket) void
+        +getStateName() String
+    }
+    
+    class NewState {
+        +handle(Ticket) void
+        +getStateName() String
+    }
+    
+    class AssignedState {
+        +handle(Ticket) void
+        +getStateName() String
+    }
+    
+    class InProgressState {
+        +handle(Ticket) void
+        +getStateName() String
+    }
+    
+    class ResolvedState {
+        +handle(Ticket) void
+        +getStateName() String
+    }
+    
+    class ClosedState {
+        +handle(Ticket) void
+        +getStateName() String
+    }
+    
+    TicketState <|.. NewState
+    TicketState <|.. AssignedState
+    TicketState <|.. InProgressState
+    TicketState <|.. ResolvedState
+    TicketState <|.. ClosedState
+
+    
+    %% Strategy Pattern
+    class ResponseStrategy {
+        <<interface>>
+        +respond() void
+    }
+    
+    class BugResponseStrategy {
+        +respond() void
+    }
+    
+    class GenericResponseStrategy {
+        +respond() void
+    }
+    
+    ResponseStrategy <|.. BugResponseStrategy
+    ResponseStrategy <|.. GenericResponseStrategy
+    
+    %% Channel Handler
+    class ChannelHandler {
+        <<interface>>
+        +handle() void
+    }
+    
+    class WebChannelHandler {
+        +handle() void
+    }
+    
+    class EmailChannelHandler {
+        +handle() void
+    }
+    
+    ChannelHandler <|.. WebChannelHandler
+    ChannelHandler <|.. EmailChannelHandler
+    
+    %% Factory Pattern
+    class TicketFactory {
+        <<interface>>
+        +createTicket() Ticket
+    }
+    
+    class BugTicketFactory {
+        +createTicket() Ticket
+    }
+    
+    class GenericTicketFactory {
+        +createTicket() Ticket
+    }
+    
+    TicketFactory <|.. BugTicketFactory
+    TicketFactory <|.. GenericTicketFactory
+    
+    %% Main Classes
+    class Ticket {
+        -int id
+        -String type
+        -TicketState state
+        -ResponseStrategy responseStrategy
+        +setState(TicketState) void
+        +handle() void
+        +respond() void
+    }
+    
+    class TicketService {
+        +processTicket(Ticket) void
+    }
+    
+    Ticket --> TicketState
+    Ticket --> ResponseStrategy
+    TicketFactory ..> Ticket
